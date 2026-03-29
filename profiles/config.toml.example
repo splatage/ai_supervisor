@@ -1,0 +1,38 @@
+# Example Codex config sections for ai_supervisor.
+# Merge the parts you want into ~/.codex/config.toml.
+
+review_model = "gpt-5.4"
+
+[profiles.supervisor]
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+model_verbosity = "medium"
+plan_mode_reasoning_effort = "high"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+personality = "pragmatic"
+
+[profiles.worker]
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+model_verbosity = "low"
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+personality = "pragmatic"
+
+[profiles.reviewer]
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+model_verbosity = "low"
+approval_policy = "never"
+sandbox_mode = "read-only"
+personality = "pragmatic"
+
+# Optional: mark known project roots as trusted.
+# Replace these example paths with your real local paths.
+#
+# [projects."/home/you/Projects/example-repo"]
+# trust_level = "trusted"
+#
+# [projects."/home/you/Projects/ai_supervisor"]
+# trust_level = "trusted"

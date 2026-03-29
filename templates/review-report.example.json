@@ -1,0 +1,15 @@
+{
+  "task_id": "TASK-001",
+  "verdict": "rework",
+  "summary": "The change is close, but there are blocking concerns to address before approval.",
+  "blocking_findings": [
+    {
+      "title": "Example blocking issue",
+      "detail": "Describe the architectural or correctness problem.",
+      "file": "src/example.py"
+    }
+  ],
+  "non_blocking_findings": [],
+  "scope_violations": [],
+  "recommended_action": "Revise the worker packet or ask the worker to correct the identified issue."
+}

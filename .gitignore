@@ -1,0 +1,12 @@
+# Harness-local noise
+runs/*
+!runs/.gitkeep
+
+# Target repo overlay run artifacts
+SUPERVISOR/RUNS/*
+!SUPERVISOR/RUNS/.gitkeep
+SUPERVISOR/REVIEWS/*
+!SUPERVISOR/REVIEWS/.gitkeep
+
+# Suggested local worktree scratch area
+.ai_supervisor_worktrees/

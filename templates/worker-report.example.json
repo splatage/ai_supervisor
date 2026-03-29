@@ -1,0 +1,18 @@
+{
+  "task_id": "TASK-001",
+  "status": "completed",
+  "summary": "Implemented the requested change without widening scope.",
+  "files_touched_claimed": [
+    "src/example.py"
+  ],
+  "assumptions": [],
+  "validation_ran": [
+    {
+      "command": "pytest -q",
+      "result": "passed",
+      "notes": "Targeted tests only."
+    }
+  ],
+  "unresolved_risks": [],
+  "next_step_recommendation": "Run the review pass and then inspect the diff."
+}

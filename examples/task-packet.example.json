@@ -1,0 +1,33 @@
+{
+  "task_id": "TASK-001",
+  "title": "Document the repository purpose in README",
+  "role": "documenter",
+  "target_repo_name": "example-repo",
+  "base_ref": "main",
+  "worker_branch": "ai-supervisor/TASK-001",
+  "goal": "Add a concise repository-purpose section to the README without changing any code or introducing new project claims.",
+  "allowed_write_paths": [
+    "README.md"
+  ],
+  "read_only_context_paths": [
+    "AGENTS.md",
+    "SUPERVISOR/REQUIREMENTS.md",
+    "SUPERVISOR/INVARIANTS.md",
+    "SUPERVISOR/DONE_CRITERIA.md"
+  ],
+  "constraints": [
+    "Do not edit any source code.",
+    "Do not invent features that are not already present in the repository.",
+    "Keep the change concise."
+  ],
+  "validation_commands": [],
+  "deliverables": [
+    "Updated README.md"
+  ],
+  "done_criteria": [
+    "README contains a clear repository-purpose section.",
+    "Only README.md is modified."
+  ],
+  "acceptance_notes": "A short, accurate update is preferred over a broad rewrite.",
+  "rejection_notes": "Reject if additional files are changed or if the README overclaims features."
+}
