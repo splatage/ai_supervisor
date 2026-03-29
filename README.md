@@ -17,6 +17,7 @@ This scaffold is an initial working slice:
 - machine-readable review reports
 - hard writable-path allowlists
 - explicit review step before acceptance
+- guided bootstrap wizard for project overlay + Codex profile setup
 
 It is **not** yet a full autonomous merge system.
 
@@ -51,21 +52,32 @@ npm install -g @openai/codex
 codex
 ```
 
-### 2. Prepare Codex config
+### 2. Run guided init
 
-Review `profiles/config.toml.example` and merge the relevant sections into your `~/.codex/config.toml`.
+The recommended entry point is the interactive init wizard.
 
-This harness does **not** overwrite your Codex config automatically.
+```bash
+./scripts/init-environment.sh --target-repo /path/to/your/source-repo
+```
 
-### 3. Bootstrap a target repo
+The wizard will:
 
-Copy the project overlay into the target source repo:
+- verify `git`, `python3`, and `codex`
+- inspect the target repo
+- ask for the required project truth fields
+- write or refresh the overlay docs under `SUPERVISOR/`
+- write `SUPERVISOR/bootstrap-manifest.json`
+- optionally install or refresh a managed block in `~/.codex/config.toml`
+
+If you prefer to skip the wizard and only copy the bare overlay skeleton, you can still use:
 
 ```bash
 ./scripts/bootstrap-project.sh /path/to/your/source-repo
 ```
 
-That creates:
+### 3. Review the generated project truth files
+
+The wizard writes these into the target repo:
 
 ```text
 TARGET_REPO/
@@ -78,7 +90,10 @@ TARGET_REPO/
     TASKS/
     RUNS/
     REVIEWS/
+    bootstrap-manifest.json
 ```
+
+Review them before spawning workers.
 
 ### 4. Author a task packet
 
@@ -96,7 +111,9 @@ TARGET_REPO/SUPERVISOR/TASKS/TASK-001.json
 ### 5. Spawn a worker
 
 ```bash
-./scripts/spawn-worker.sh   --target-repo /path/to/your/source-repo   --task /path/to/your/source-repo/SUPERVISOR/TASKS/TASK-001.json
+./scripts/spawn-worker.sh \
+  --target-repo /path/to/your/source-repo \
+  --task /path/to/your/source-repo/SUPERVISOR/TASKS/TASK-001.json
 ```
 
 This will:
@@ -107,10 +124,13 @@ This will:
 - save a machine-readable worker report
 - capture transcripts and repo state
 
+If the target repo has already been initialized, the runner will pick up the default worktree root and default model from `SUPERVISOR/bootstrap-manifest.json` unless you override them on the command line.
+
 ### 6. Review the returned work
 
 ```bash
-./scripts/review-worker.sh   --run-dir /path/to/your/source-repo/SUPERVISOR/RUNS/<RUN_ID>
+./scripts/review-worker.sh \
+  --run-dir /path/to/your/source-repo/SUPERVISOR/RUNS/<RUN_ID>
 ```
 
 This will:
@@ -146,8 +166,11 @@ The human supervisor remains the final acceptance authority.
 
 ## Scripts
 
+### `init-environment.sh`
+Guided bootstrap for a target repo. It collects the required project truth fields, writes the overlay documents, stores a bootstrap manifest, and can update the user's Codex config with a clearly marked managed block.
+
 ### `bootstrap-project.sh`
-Copies the project overlay into a target repo.
+Copies the project overlay into a target repo without asking questions.
 
 ### `spawn-worker.sh`
 Thin shell wrapper over the Python supervisor runner for worker execution.
@@ -161,6 +184,7 @@ Summarises the run artifacts in a compact human-readable form.
 ### `supervisor.py`
 The main local runner. Current subcommands:
 
+- `init`
 - `bootstrap-overlay`
 - `spawn`
 - `review`
@@ -172,6 +196,7 @@ The main local runner. Current subcommands:
 - Worker lanes default to `workspace-write` + `approval_policy = "never"` so unattended runs do not stall waiting for approval.
 - This intentionally trades off some task breadth in favor of deterministic local execution.
 - The harness does not commit or merge for you.
+- The init wizard can update `~/.codex/config.toml`, but only inside a clearly marked managed block and with a backup created first when the file already exists.
 
 ## Recommended next iterations
 

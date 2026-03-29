@@ -1,6 +1,8 @@
 # Example Codex config sections for ai_supervisor.
-# Merge the parts you want into ~/.codex/config.toml.
+# Merge the parts you want into ~/.codex/config.toml, or let the init wizard
+# install or refresh the clearly marked managed block for you.
 
+# >>> ai_supervisor managed block >>>
 review_model = "gpt-5.4"
 
 [profiles.supervisor]
@@ -36,3 +38,4 @@ personality = "pragmatic"
 #
 # [projects."/home/you/Projects/ai_supervisor"]
 # trust_level = "trusted"
+# <<< ai_supervisor managed block <<<
